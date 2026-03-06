@@ -3,7 +3,7 @@ import AddTodoForm from './components/AddTodoForm';
 import TodoFilters from './components/TodoFilters';
 import TodoItem from './components/TodoItem';
 function App() {
-	
+
 	// Состояние для списка задач
 	const [todos, setTodos] = useState(() => {
 		// Загружаем сохраненные задачи из localStorage
@@ -32,6 +32,12 @@ function App() {
 	const toggleTodo = (id) => {
 		setTodos(todos.map(todo =>
 			todo.id === id ? { ...todo, completed: !todo.completed } : todo
+		));
+	};
+
+	const renameTodo = (id, newText) => {
+		setTodos(todos.map(todo =>
+			todo.id === id ? { ...todo, text : newText } : todo
 		));
 	};
 
@@ -76,6 +82,7 @@ function App() {
 							task={todo}
 							onToggle={toggleTodo}
 							onDelete={deleteTodo}
+							onEdit={renameTodo}
 						/>
 					))}
 				</ul>
