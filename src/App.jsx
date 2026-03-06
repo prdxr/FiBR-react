@@ -18,6 +18,27 @@ function App() {
 		localStorage.setItem('todos', JSON.stringify(todos));
 	}, [todos]);
 
+	// Состояние темы приложения
+	const [theme, setTheme] = useState(() => {
+        const savedTheme = localStorage.getItem('theme');
+        return savedTheme || 'light';
+    });
+
+	// Переключение темы
+    const toggleTheme = () => {
+        setTheme(prev => {
+            const newTheme = prev === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            return newTheme;
+        });
+    };
+
+	// Применяем тему к body
+    useEffect(() => {
+        document.body.style.backgroundColor = theme === 'light' ? '#fff' : '#222';
+        document.body.style.color = theme === 'light' ? '#333' : '#eee';
+    }, [theme]);
+
 	// Добавление новой задачи
 	const addTodo = (text) => {
 		const newTodo = {
@@ -60,9 +81,23 @@ function App() {
 			maxWidth: '600px',
 			margin: '0 auto',
 			padding: '20px',
-			fontFamily: 'Arial, sans-serif'
+			fontFamily: 'Arial, sans-serif',
+			backgroundColor: theme === 'light' ? '#fff' : '#222',
+			color: theme === 'light' ? '#333' : '#eee',
 		}}>
-			<h1 style={{ textAlign: 'center', color: '#333' }}>Менеджер задач</h1>
+			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h1 style={{ color: theme === 'light' ? '#333' : '#eee' }}>Менеджер задач</h1>
+                <button onClick={toggleTheme} style={{
+                    padding: '6px 12px',
+                    background: theme === 'light' ? '#333' : '#eee',
+                    color: theme === 'light' ? '#fff' : '#333',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                }}>
+                    {theme === 'light' ? '🌙 Тёмная' : '☀️ Светлая'}
+                </button>
+            </div>
 			<AddTodoForm onAdd={addTodo} />
 			<TodoFilters
 				filter={filter}
@@ -83,6 +118,7 @@ function App() {
 							onToggle={toggleTodo}
 							onDelete={deleteTodo}
 							onEdit={renameTodo}
+							theme={theme}
 						/>
 					))}
 				</ul>

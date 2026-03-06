@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function TodoItem({ task, onToggle, onDelete, onEdit }) {
+function TodoItem({ task, onToggle, onDelete, onEdit, theme }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editText, setEditText] = useState(task.text);
 
@@ -49,7 +49,7 @@ function TodoItem({ task, onToggle, onDelete, onEdit }) {
                 <span style={{
                         flex: 1,
                         textDecoration: task.completed ? 'line-through' : 'none',
-                        color: task.completed ? '#999' : '#333'
+                        color: task.completed ? '#999' : theme === 'light' ? '#333' : '#ccc'
                     }}
                     onDoubleClick={() => {
                         setIsEditing(true);
